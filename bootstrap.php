@@ -12,6 +12,7 @@
 use Avolutions\Core\Autoloader;
 use Avolutions\Config\Config;
 use Avolutions\Database\Database;
+use Avolutions\Di\Container;
 
 /**
  * Get start time
@@ -56,9 +57,14 @@ require_once SRC_PATH.'Core'.DIRECTORY_SEPARATOR.'Autoloader.php';
 Autoloader::register(); 
 
 /**
+ * Create dependency injection container
+ */
+$Container = new Container();
+
+/**
  * Set error handler
  */
-$ErrorHandler = new Avolutions\Core\ErrorHandler();
+$ErrorHandler = $Container->get('Avolutions\Core\ErrorHandler');
 set_error_handler([$ErrorHandler, 'handleError']);
 set_exception_handler([$ErrorHandler, 'handleException']);
 

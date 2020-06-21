@@ -9,9 +9,7 @@
  * @link		http://avolutions.org
  */
 
-use Avolutions\Logging\Logger;
 use Avolutions\Http\Request;
-use Avolutions\Routing\Router;
 
 /**
  * Load the bootstrap file
@@ -31,6 +29,5 @@ require_once '../events.php';
 /**
  * Start the application
  */
-$Request = new Request();
+$Request = $Container->get('Avolutions\Http\Request');
 $Response = $Request->send();
-
