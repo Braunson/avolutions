@@ -11,6 +11,7 @@
  
 namespace Avolutions\Http;
 
+use Avolutions\Di\Container;
 use Avolutions\Routing\Router; 
 
 /**
@@ -24,6 +25,11 @@ use Avolutions\Routing\Router;
  */
 class Request
 {
+    /**
+     * @var Container $Container The dependency injection container
+     */
+    private $Container;
+
 	/** 
 	 * @var string $uri The uri of the request.
 	 */
@@ -45,8 +51,10 @@ class Request
 	 * Creates a new Request object.	 						  
 	 *
 	 */
-    public function __construct()
+    public function __construct(Container $Container)
     {
+        $this->Container = $Container;
+
 		$this->uri = $_SERVER['REQUEST_URI'];
         $this->method = $_SERVER['REQUEST_METHOD'];
 
@@ -68,13 +76,13 @@ class Request
 		$MatchedRoute = Router::findRoute($this->uri, $this->method);	
 						
 		$fullControllerName = APP_CONTROLLER_NAMESPACE.ucfirst($MatchedRoute->controllerName).'Controller';
-		$Controller = new $fullControllerName();		
-		
+		$Controller = $this->Container->get($fullControllerName);
+
         $fullActionName = $MatchedRoute->actionName.'Action';        
         // Merge the parameters of the route with the values of $_REQUEST
         $parameters = array_merge($MatchedRoute->parameters, $this->parameters);
 
-		$Response = new Response();
+		$Response = $this->Container->get('Avolutions\Http\Response');
 		$Response->setBody(call_user_func_array([$Controller, $fullActionName], $parameters));
 		$Response->send();
 	}
