@@ -11,6 +11,7 @@
  
 namespace Avolutions\Event;
 
+use Avolutions\Di\Container;
 use Avolutions\Event\EntityEvent;
 
 /**
@@ -32,10 +33,11 @@ class EventDispatcher
      */
     public static function dispatch($Event)
     {
+        $Container = new Container();
+
         if ($Event instanceof EntityEvent) {            
             $entityName = $Event->Entity->getEntityName();
-            $listener = APP_LISTENER_NAMESPACE.$entityName.'Listener';
-            $Listener = new $listener();
+            $Listener = $Container->get(APP_LISTENER_NAMESPACE.$entityName.'Listener');
             $method = 'handle'.$Event->getName();
 
             $callable = [$Listener, $method];
@@ -49,7 +51,7 @@ class EventDispatcher
 
         $ListenerCollection = ListenerCollection::getInstance();
         foreach ($ListenerCollection->getListener($Event->getName()) as $listener) {
-            $Listener = new $listener[0];
+            $Listener = $Container->get($listener[0]);
             $method = $listener[1];
 
             $callable = [$Listener, $method];
