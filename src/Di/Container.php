@@ -21,6 +21,8 @@ namespace Avolutions\Di;
  */
 class Container
 {
+    private $resolvedEntries = [];
+
     /**
      * Finds an entry of the container by its identifier and returns it.
      *
@@ -30,6 +32,12 @@ class Container
      */
     public function get($name)
     {
+        //print_r($this->resolvedEntries);
+
+        if (isset($this->resolvedEntries[$name])) {
+            return $this->resolvedEntries[$name];
+        }
+
         $parameters = [];
 
         $ReflectionClass = new \ReflectionClass($name);        
@@ -42,6 +50,9 @@ class Container
             }
         }
 
-        return new $name(...$parameters);
+        $entry = new $name(...$parameters);
+        $this->resolvedEntries[$name] = $entry;
+
+        return $this->resolvedEntries[$name];
     }
 }
