@@ -32,8 +32,6 @@ class Container
      */
     public function get($name)
     {
-        //print_r($this->resolvedEntries);
-
         if (isset($this->resolvedEntries[$name])) {
             return $this->resolvedEntries[$name];
         }
@@ -53,6 +51,6 @@ class Container
         $entry = new $name(...$parameters);
         $this->resolvedEntries[$name] = $entry;
 
-        return $this->resolvedEntries[$name];
+        return $entry;
     }
 }
