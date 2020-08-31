@@ -17,7 +17,7 @@ namespace Avolutions\Di;
  * The Dependency Injection Container.
  *
  * @author	Alexander Vogt <alexander.vogt@avolutions.org>
- * @since	0.4.0
+ * @since	0.6.0
  */
 class Container
 {
@@ -26,19 +26,19 @@ class Container
     /**
      * Finds an entry of the container by its identifier and returns it.
      *
-     * @param string $name Identifier of the entry to look for.
+     * @param string $id Identifier of the entry to look for.
      *
      * @return mixed The resolved entry.
      */
-    public function get($name)
+    public function get($id)
     {
-        if (isset($this->resolvedEntries[$name])) {
-            return $this->resolvedEntries[$name];
+        if (isset($this->resolvedEntries[$id])) {
+            return $this->resolvedEntries[$id];
         }
 
         $parameters = [];
 
-        $ReflectionClass = new \ReflectionClass($name);        
+        $ReflectionClass = new \ReflectionClass($id);        
         $Constructor = $ReflectionClass->getConstructor();
 
         if(!is_null($Constructor)) {
@@ -48,8 +48,8 @@ class Container
             }
         }
 
-        $entry = new $name(...$parameters);
-        $this->resolvedEntries[$name] = $entry;
+        $entry = new $id(...$parameters);
+        $this->resolvedEntries[$id] = $entry;
 
         return $entry;
     }
