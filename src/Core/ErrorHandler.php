@@ -25,6 +25,19 @@ use Avolutions\Logging\Logger;
 class ErrorHandler
 {	
     /**
+     * TODO
+     */
+    private $Logger;
+
+    /**
+     * TODO
+     */
+    public function __construct(Logger $Logger) 
+    {
+        $this->Logger = $Logger;
+    }
+
+    /**
 	 * handleError
 	 * 
 	 * Handles uncaught errors, convert them into an exception an throw it.
@@ -50,7 +63,7 @@ class ErrorHandler
 	 */
     public function handleException($exception) 
     {
-        Logger::error($exception);
+        $this->Logger->error($exception);
 
         throw $exception;
     }

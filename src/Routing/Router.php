@@ -21,6 +21,19 @@ namespace Avolutions\Routing;
  */
 class Router
 {
+    /**
+     * TODO
+     */
+    private $RouteCollection;
+
+    /**
+     * TODO
+     */
+    public function __construct(RouteCollection $RouteCollection)
+    {
+        $this->RouteCollection = $RouteCollection;
+    }
+
 	/**
 	 * findRoute
 	 * 
@@ -31,13 +44,12 @@ class Router
 	 *
 	 * @return object The matched Route object with final controller-/action names and parameter values. 
 	 */
-    public static function findRoute($path, $method)
+    public function findRoute($path, $method)
     {
-		$RouteCollection = RouteCollection::getInstance();
 		$MatchedRoute = null;
 				
-		foreach ($RouteCollection->getAllByMethod($method) as $Route) {
-			if (preg_match(self::getRegularExpression($Route), $path, $matches)) {
+		foreach ($this->RouteCollection->getAllByMethod($method) as $Route) {
+			if (preg_match($this->getRegularExpression($Route), $path, $matches)) {
 
 				// remove full match
 				array_splice($matches, 0, 1);
@@ -45,8 +57,8 @@ class Router
 				preg_match_all('/\<[^\>]*\>/', $Route->url, $explodedUrl);
 				$explodedUrl = $explodedUrl[0];
 
-				$controllerName = self::getKeywordValue($matches, $explodedUrl, 'controller');
-				$actionName = self::getKeywordValue($matches, $explodedUrl, 'action');
+				$controllerName = $this->getKeywordValue($matches, $explodedUrl, 'controller');
+				$actionName = $this->getKeywordValue($matches, $explodedUrl, 'action');
 				
 				$MatchedRoute = $Route;
 				if ($controllerName) {				
@@ -55,7 +67,7 @@ class Router
 				if ($actionName) {				
 					$MatchedRoute->actionName = $actionName;	
 				}
-				$MatchedRoute->parameters = self::getParameterValues($matches, $explodedUrl, $MatchedRoute->parameters);
+				$MatchedRoute->parameters = $this->getParameterValues($matches, $explodedUrl, $MatchedRoute->parameters);
 				
 				break;
 			}
@@ -74,7 +86,7 @@ class Router
 	 *
 	 * @return string The regular expression to match the url of the Route. 
 	 */
-    private static function getRegularExpression($Route)
+    private function getRegularExpression($Route)
     {
 		$startDelimiter = '/^';
 		$endDelimiter = '$/';
@@ -117,7 +129,7 @@ class Router
 	 *
 	 * @return mixed The value of the keyword from the url or false if nothing found. 
 	 */
-    private static function getKeywordValue($matches, $explodedUrl, $keyword)
+    private function getKeywordValue($matches, $explodedUrl, $keyword)
     {
 		$keywordIndex = array_search('<'.$keyword.'>', $explodedUrl); 
 		
@@ -136,12 +148,12 @@ class Router
 	 *
 	 * @return array An array with all parameter values.
 	 */
-    private static function getParameterValues($matches, $explodedUrl, $parameters)
+    private function getParameterValues($matches, $explodedUrl, $parameters)
     {
 		$parameterValues = [];
 	
 		foreach ($parameters as $parameterName => $parameterOptions) {
-			$value = self::getKeywordValue($matches, $explodedUrl, $parameterName);
+			$value = $this->getKeywordValue($matches, $explodedUrl, $parameterName);
 			
 			if ($value) {
 				$parameterValues[] = $value;

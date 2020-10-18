@@ -24,19 +24,26 @@ use Avolutions\Config\Config;
  */
 class Database extends \PDO
 {
+    /**
+     * TODO
+     */
+    private $Config;
+
 	/**
 	 * __construct
 	 * 
 	 * Creates a database connection using the config values from database configuration file.
 	 */
-    public function __construct()
+    public function __construct(Config $Config)
     {
-		$host = Config::get('database/host');
-		$database = Config::get('database/database');
-		$port = Config::get('database/port');
-		$user = Config::get('database/user');
-		$password = Config::get('database/password');
-		$charset  = Config::get('database/charset');
+        $this->Config = $Config;
+
+		$host = $this->Config->get('database/host');
+		$database = $this->Config->get('database/database');
+		$port = $this->Config->get('database/port');
+		$user = $this->Config->get('database/user');
+		$password = $this->Config->get('database/password');
+		$charset  = $this->Config->get('database/charset');
 		$options  = [
             \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES '.$charset,
 			\PDO::ATTR_PERSISTENT => true
@@ -55,7 +62,7 @@ class Database extends \PDO
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
 	 */
-    public static function migrate()
+    public function migrate()
     {
 		$migrationsToExecute = [];
 		$migrationFiles = array_map('basename', glob(APP_DATABASE_PATH.'*.php'));

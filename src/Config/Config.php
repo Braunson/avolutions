@@ -11,8 +11,6 @@
  
 namespace Avolutions\Config;
 
-use Avolutions\Core\AbstractSingleton;
-
 /**
  * Config class
  *
@@ -22,12 +20,12 @@ use Avolutions\Core\AbstractSingleton;
  * @author	Alexander Vogt <alexander.vogt@avolutions.org>
  * @since	0.1.0
  */
-class Config extends AbstractSingleton
+class Config
 {
 	/**
 	 * @var array $configValues An array containing all loaded configuration values
 	 */
-	private static $configValues = [];
+	private $configValues = [];
 	
 	/**
 	 * initialize
@@ -52,7 +50,7 @@ class Config extends AbstractSingleton
 						
 			$configValues = array_merge($coreConfigValues, $appConfigValues);
 						
-			self::$configValues[pathinfo($configFile, PATHINFO_FILENAME)] = $configValues;
+			$this->configValues[pathinfo($configFile, PATHINFO_FILENAME)] = $configValues;
 		}
 	}
 	
@@ -67,11 +65,11 @@ class Config extends AbstractSingleton
 	 *
 	 * @return mixed The config value
 	 */
-    public static function get($key)
+    public function get($key)
     {
 		$identifier = explode('/', $key);
 		
-		$configValues = self::$configValues;
+		$configValues = $this->configValues;
 			
 		foreach ($identifier as $value) {
 			if (!isset($configValues[$value])) {

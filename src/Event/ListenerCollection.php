@@ -13,7 +13,6 @@ namespace Avolutions\Event;
 
 use Avolutions\Collection\CollectionInterface;
 use Avolutions\Collection\CollectionTrait;
-use Avolutions\Core\AbstractSingleton;
 
 /**
  * ListenerCollection class
@@ -23,7 +22,7 @@ use Avolutions\Core\AbstractSingleton;
  * @author	Alexander Vogt <alexander.vogt@avolutions.org>
  * @since	0.3.0
  */
-class ListenerCollection extends AbstractSingleton implements CollectionInterface
+class ListenerCollection implements CollectionInterface
 {
 	use CollectionTrait;
 	

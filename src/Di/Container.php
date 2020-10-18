@@ -21,7 +21,23 @@ namespace Avolutions\Di;
  */
 class Container
 {
+    /**
+     * TODO
+    */
     private $resolvedEntries = [];
+
+    /**
+     * TODO
+    */
+    private $singletons = [];
+
+    /**
+     * TODO
+     */
+    public function __construct()
+    {
+        $this->resolvedEntries["Avolutions\Di\Container"] = $this;
+    }
 
     /**
      * Finds an entry of the container by its identifier and returns it.
@@ -32,9 +48,11 @@ class Container
      */
     public function get($id)
     {
-        if (isset($this->resolvedEntries[$id])) {
-            return $this->resolvedEntries[$id];
-        }
+        if(isset($this->singletons[$id])) {
+            if (isset($this->resolvedEntries[$id])) {
+                return $this->resolvedEntries[$id];
+            }
+        }        
 
         $parameters = [];
 
@@ -52,5 +70,15 @@ class Container
         $this->resolvedEntries[$id] = $entry;
 
         return $entry;
+    }
+
+    /**
+     * TODO
+     */
+    public function setSingleton($id) 
+    {
+        if (!isset($this->singletons[$id])) {
+            $this->singletons[$id] = $id;
+        }
     }
 }

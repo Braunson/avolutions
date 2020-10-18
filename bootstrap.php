@@ -62,6 +62,20 @@ Autoloader::register();
 $Container = new Container();
 
 /**
+ * Configure dependency injection container
+ */
+$Container->setSingleton("Avolutions\Di\Container");
+$Container->setSingleton("Avolutions\Config\Config");
+$Container->setSingleton("Avolutions\Event\ListenerCollection");
+$Container->setSingleton("Avolutions\Routing\RouteCollection");
+
+/**
+ * Initialize the Configuration
+ */	 
+$Config = $Container->get("Avolutions\Config\Config");
+$Config->initialize();
+
+/**
  * Set error handler
  */
 $ErrorHandler = $Container->get('Avolutions\Core\ErrorHandler');
@@ -69,15 +83,9 @@ set_error_handler([$ErrorHandler, 'handleError']);
 set_exception_handler([$ErrorHandler, 'handleException']);
 
 /**
- * Initialize the Configuration
- */	 
-$Config = Config::getInstance();
-$Config->initialize();
-
-/**
  * Define application namespaces
  */
-define('APPLICATION_NAMESPACE', Config::get('application/namespace'));
+define('APPLICATION_NAMESPACE', $Config->get('application/namespace'));
 define('APP_CONTROLLER_NAMESPACE', APPLICATION_NAMESPACE.'\\'.CONTROLLER.'\\');
 define('APP_DATABASE_NAMESPACE', APPLICATION_NAMESPACE.'\\'.DATABASE.'\\');
 define('APP_LISTENER_NAMESPACE', APPLICATION_NAMESPACE.'\\'.LISTENER.'\\');
@@ -86,6 +94,7 @@ define('APP_MODEL_NAMESPACE', APPLICATION_NAMESPACE.'\\'.MODEL.'\\');
 /**
  * Migrate the Database
  */
-if (Config::get('database/migrateOnAppStart')) {	
-	Database::migrate(); 
+if ($Config->get('database/migrateOnAppStart')) {	    
+    $Database = $Container->get("Avolutions\Database\Database");
+	$Database->migrate(); 
 }

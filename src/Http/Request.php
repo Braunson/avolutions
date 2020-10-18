@@ -29,6 +29,11 @@ class Request
      * @var Container $Container The dependency injection container
      */
     private $Container;
+    
+    /**
+     * TODO
+     */
+    private $Router;
 
 	/** 
 	 * @var string $uri The uri of the request.
@@ -43,7 +48,7 @@ class Request
 	/** 
 	 * @var array $parameters The variables from $_REQUEST.
 	 */
-	public $parameters = [];
+    public $parameters = [];
 		
 	/**
 	 * __construct
@@ -51,9 +56,10 @@ class Request
 	 * Creates a new Request object.	 						  
 	 *
 	 */
-    public function __construct(Container $Container)
+    public function __construct(Container $Container, Router $Router)
     {
         $this->Container = $Container;
+        $this->Router = $Router;
 
 		$this->uri = $_SERVER['REQUEST_URI'];
         $this->method = $_SERVER['REQUEST_METHOD'];
@@ -73,7 +79,7 @@ class Request
 	 */
     public function send()
     {		
-		$MatchedRoute = Router::findRoute($this->uri, $this->method);	
+		$MatchedRoute = $this->Router->findRoute($this->uri, $this->method);	
 						
 		$fullControllerName = APP_CONTROLLER_NAMESPACE.ucfirst($MatchedRoute->controllerName).'Controller';
 		$Controller = $this->Container->get($fullControllerName);

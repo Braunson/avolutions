@@ -11,7 +11,7 @@
 
 use Avolutions\Event\ListenerCollection;
 
-$ListenerCollection = ListenerCollection::getInstance();
+$ListenerCollection = $Container->get("Avolutions\Event\ListenerCollection");
 
 /**
  * Register listener
