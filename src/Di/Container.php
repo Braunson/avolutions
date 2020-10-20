@@ -11,6 +11,8 @@
  
 namespace Avolutions\Di;
 
+use Avolutions\Core\AbstractSingleton;
+
 /**
  * Container class
  *
@@ -19,7 +21,7 @@ namespace Avolutions\Di;
  * @author	Alexander Vogt <alexander.vogt@avolutions.org>
  * @since	0.6.0
  */
-class Container
+class Container extends AbstractSingleton
 {
     /**
      * TODO
@@ -30,14 +32,6 @@ class Container
      * TODO
     */
     private $singletons = [];
-
-    /**
-     * TODO
-     */
-    public function __construct()
-    {
-        $this->resolvedEntries["Avolutions\Di\Container"] = $this;
-    }
 
     /**
      * Finds an entry of the container by its identifier and returns it.
@@ -66,7 +60,11 @@ class Container
             }
         }
 
-        $entry = new $id(...$parameters);
+        if($ReflectionClass->isSubclassOf('Avolutions\Core\AbstractSingleton')) {
+            $entry = $id::getInstance();
+        } else {
+            $entry = new $id(...$parameters);
+        }
         $this->resolvedEntries[$id] = $entry;
 
         return $entry;

@@ -59,7 +59,7 @@ Autoloader::register();
 /**
  * Create dependency injection container
  */
-$Container = new Container();
+$Container = Container::getInstance();
 
 /**
  * Configure dependency injection container
