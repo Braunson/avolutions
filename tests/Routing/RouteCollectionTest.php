@@ -11,6 +11,7 @@
 
 use PHPUnit\Framework\TestCase;
 
+use Avolutions\Di\Container;
 use Avolutions\Routing\Route;
 use Avolutions\Routing\RouteCollection;
 
@@ -18,14 +19,17 @@ class RouteCollectionTest extends TestCase
 {
     public function testRouteCollectionCanBeCreated()
     {
-        $RouteCollection = RouteCollection::getInstance();
+        $Container = Container::getInstance();
+        $RouteCollection = $Container->get('Avolutions\Routing\RouteCollection');
         
         $this->assertInstanceOf('Avolutions\Routing\RouteCollection', $RouteCollection);    
     }
 
     public function testRoutesCanBeAddedToCollection()
     {
-        $RouteCollection = RouteCollection::getInstance();
+        $Container = Container::getInstance();
+        $RouteCollection = $Container->get('Avolutions\Routing\RouteCollection');
+
         $Route = new Route('');
         $Route2 = new Route('', ['method' => 'POST']);
         
@@ -38,14 +42,16 @@ class RouteCollectionTest extends TestCase
 
     public function testCountItemsOfCollection()
     {
-        $RouteCollection = RouteCollection::getInstance();
+        $Container = Container::getInstance();
+        $RouteCollection = $Container->get('Avolutions\Routing\RouteCollection');
 
         $this->assertEquals(2, $RouteCollection->count());
     }
 
     public function testGetAllItemsOfCollection()
     {
-        $RouteCollection = RouteCollection::getInstance();
+        $Container = Container::getInstance();
+        $RouteCollection = $Container->get('Avolutions\Routing\RouteCollection');
 
         $allItems = $RouteCollection->getAll();
 
@@ -56,7 +62,8 @@ class RouteCollectionTest extends TestCase
 
     public function testGetAllItemsByMethodOfCollection()
     {
-        $RouteCollection = RouteCollection::getInstance();
+        $Container = Container::getInstance();
+        $RouteCollection = $Container->get('Avolutions\Routing\RouteCollection');
 
         $allGet = $RouteCollection->getAllByMethod('GET');        
         $allPost = $RouteCollection->getAllByMethod('POST');

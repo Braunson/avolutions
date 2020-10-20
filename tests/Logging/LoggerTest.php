@@ -12,6 +12,7 @@
 use PHPUnit\Framework\TestCase;
 
 use Avolutions\Config\Config;
+use Avolutions\Di\Container;
 use Avolutions\Logging\Logger;
 use Avolutions\Logging\LogLevel;
 
@@ -19,17 +20,22 @@ class LoggerTest extends TestCase
 {
     private $logFile = '';
     private $logMessage = 'This is a log message with log level ';
+    private $Logger;
 
     protected function setUp(): void
     {
-        $this->logFile = Config::get("logger/logpath").Config::get("logger/logfile");
+        $Container = Container::getInstance();
+        $Config = $Container->get("Avolutions\Config\Config");
+        $this->Logger = $Container->get("Avolutions\Logging\Logger");
+
+        $this->logFile = $Config->get("logger/logpath").$Config->get("logger/logfile");
     }
 
     public function testLoggerWithLogLevelEmergency()
     {
         $message = $this->logMessage.LogLevel::EMERGENCY;
 
-        Logger::emergency($message);
+        $this->Logger->emergency($message);
 
         $logfileContent = file_get_contents($this->logFile);
 
@@ -40,7 +46,7 @@ class LoggerTest extends TestCase
     {
         $message = $this->logMessage.LogLevel::ALERT;
 
-        Logger::alert($message);
+        $this->Logger->alert($message);
 
         $logfileContent = file_get_contents($this->logFile);
 
@@ -51,7 +57,7 @@ class LoggerTest extends TestCase
     {
         $message = $this->logMessage.LogLevel::CRITICAL;
 
-        Logger::critical($message);
+        $this->Logger->critical($message);
 
         $logfileContent = file_get_contents($this->logFile);
 
@@ -62,7 +68,7 @@ class LoggerTest extends TestCase
     {
         $message = $this->logMessage.LogLevel::ERROR;
 
-        Logger::error($message);
+        $this->Logger->error($message);
 
         $logfileContent = file_get_contents($this->logFile);
 
@@ -73,7 +79,7 @@ class LoggerTest extends TestCase
     {
         $message = $this->logMessage.LogLevel::WARNING;
 
-        Logger::warning($message);
+        $this->Logger->warning($message);
 
         $logfileContent = file_get_contents($this->logFile);
 
@@ -84,7 +90,7 @@ class LoggerTest extends TestCase
     {
         $message = $this->logMessage.LogLevel::NOTICE;
 
-        Logger::notice($message);
+        $this->Logger->notice($message);
 
         $logfileContent = file_get_contents($this->logFile);
 
@@ -95,7 +101,7 @@ class LoggerTest extends TestCase
     {
         $message = $this->logMessage.LogLevel::INFO;
 
-        Logger::info($message);
+        $this->Logger->info($message);
 
         $logfileContent = file_get_contents($this->logFile);
 
@@ -106,7 +112,7 @@ class LoggerTest extends TestCase
     {
         $message = $this->logMessage.LogLevel::DEBUG;
 
-        Logger::debug($message);
+        $this->Logger->debug($message);
 
         $logfileContent = file_get_contents($this->logFile);
 
