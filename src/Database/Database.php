@@ -67,7 +67,7 @@ class Database extends \PDO
 		$migrationsToExecute = [];
 		$migrationFiles = array_map('basename', glob(APP_DATABASE_PATH.'*.php'));
 		
-		$executedMigrations = self::getExecutedMigrations();
+		$executedMigrations = $this->getExecutedMigrations();
 		
 		foreach ($migrationFiles as $migrationFile) {
 			$migrationClassName = APP_DATABASE_NAMESPACE.pathinfo($migrationFile, PATHINFO_FILENAME);
@@ -92,11 +92,10 @@ class Database extends \PDO
 		
 		ksort($migrationsToExecute);
 		
-		$Database = new Database();
 		foreach ($migrationsToExecute as $version => $Migration) {
 			$Migration->migrate();
 			
-			$stmt = $Database->prepare('INSERT INTO migration (Version, Name) VALUES (?, ?)');
+			$stmt = $this->prepare('INSERT INTO migration (Version, Name) VALUES (?, ?)');
 			$stmt->execute([$version, (new \ReflectionClass($Migration))->getShortName()]);
 		}
 	}
@@ -108,13 +107,11 @@ class Database extends \PDO
 	 *
 	 * @return array The version numbers of the executed migrations.
 	 */
-    private static function getExecutedMigrations()
+    private function getExecutedMigrations()
     {
 		$executedMigrations = [];
-		
-		$Database = new Database();
-						
-		$stmt = $Database->prepare('SELECT * FROM migration');
+								
+		$stmt = $this->prepare('SELECT * FROM migration');
 		$stmt->execute();		
 		while ($row = $stmt->fetch(Database::FETCH_ASSOC)) {
 			$executedMigrations[] = $row['Version'];

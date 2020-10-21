@@ -12,6 +12,7 @@
 namespace Avolutions\Orm;
 
 use Avolutions\Database\Database;
+use Avolutions\Di\Container;
 use Avolutions\Event\EntityEvent;
 use Avolutions\Event\EventDispatcher;
 use Avolutions\Logging\Logger;
@@ -219,7 +220,8 @@ class Entity
 		Logger::debug($query);
 		Logger::debug('Values: '.print_r($values, true));
 
-		$Database = new Database();
+        $Container = Container::getInstance();
+		$Database = $Container->get('Avolutions\Database\Database');
 		$stmt = $Database->prepare($query);
 		$stmt->execute($values);	
 	}

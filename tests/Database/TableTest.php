@@ -15,12 +15,14 @@ use Avolutions\Database\Column;
 use Avolutions\Database\ColumnType;
 use Avolutions\Database\Database;
 use Avolutions\Database\Table;
+use Avolutions\Di\Container;
 
 class TableTest extends TestCase
 {
     public function setUp() : void
     {
-        $Database = new Database();
+        $Container = Container::getInstance();
+		$Database = $Container->get('Avolutions\Database\Database');
 
         $query = 'DROP TABLE `user`';
         $stmt = $Database->prepare($query);
@@ -67,7 +69,8 @@ class TableTest extends TestCase
 
         $this->createUserTable();        
 
-        $Database = new Database();
+        $Container = Container::getInstance();
+		$Database = $Container->get('Avolutions\Database\Database');
 
         $query = 'DESCRIBE user';
         $stmt = $Database->prepare($query);
@@ -92,7 +95,8 @@ class TableTest extends TestCase
         $this->createUserTable(); 
         Table::addColumn('user', new Column('NewColumn', ColumnType::VARCHAR, 255));
 
-        $Database = new Database();
+        $Container = Container::getInstance();
+		$Database = $Container->get('Avolutions\Database\Database');
 
         $query = 'DESCRIBE user';
         $stmt = $Database->prepare($query);
@@ -117,7 +121,8 @@ class TableTest extends TestCase
         $this->createUserTable(); 
         Table::addColumn('user', new Column('NewColumnAtPosition', ColumnType::VARCHAR, 255), 'Firstname');
 
-        $Database = new Database();
+        $Container = Container::getInstance();
+		$Database = $Container->get('Avolutions\Database\Database');
 
         $query = 'DESCRIBE user';
         $stmt = $Database->prepare($query);
@@ -133,7 +138,8 @@ class TableTest extends TestCase
         $this->createUserTable();
         Table::removeColumn('user', 'Firstname');
 
-        $Database = new Database();
+        $Container = Container::getInstance();
+		$Database = $Container->get('Avolutions\Database\Database');
 
         $query = 'DESCRIBE user';
         $stmt = $Database->prepare($query);
@@ -158,7 +164,8 @@ class TableTest extends TestCase
         $this->createUserTable();
         Table::addIndex('user', Table::UNIQUE, ['Firstname']);
 
-        $Database = new Database();
+        $Container = Container::getInstance();
+		$Database = $Container->get('Avolutions\Database\Database');
 
         $query = 'DESCRIBE user';
         $stmt = $Database->prepare($query);
@@ -175,7 +182,8 @@ class TableTest extends TestCase
         Table::addIndex('user', Table::INDEX, ['Firstname']);
         Table::addForeignKeyConstraint('user', 'Lastname', 'user', 'Firstname', Table::RESTRICT, Table::RESTRICT, 'fk_constraint');
 
-        $Database = new Database();
+        $Container = Container::getInstance();
+		$Database = $Container->get('Avolutions\Database\Database');
 
         $query = 'SELECT * FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE REFERENCED_TABLE_SCHEMA = \'avolutions\' AND REFERENCED_TABLE_NAME = \'user\'';
         $stmt = $Database->prepare($query);

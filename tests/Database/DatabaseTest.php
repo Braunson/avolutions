@@ -12,12 +12,14 @@
 use PHPUnit\Framework\TestCase;
 
 use Avolutions\Database\Database;
+use Avolutions\Di\Container;
 
 class DatabaseTest extends TestCase
 {
     public function testDatabaseConnection()
     {
-        $Database = new Database();
+        $Container = Container::getInstance();
+		$Database = $Container->get('Avolutions\Database\Database');
 
         $this->assertInstanceOf('\PDO', $Database);
     }
@@ -58,10 +60,11 @@ class DatabaseTest extends TestCase
                 'Extra' => ''
             ]
         ];
- 
-        Database::migrate();
 
-        $Database = new Database();
+        $Container = Container::getInstance();
+        $Database = $Container->get('Avolutions\Database\Database');
+         
+        $Database->migrate();
 
         $query = 'DESCRIBE migration';
         $stmt = $Database->prepare($query);

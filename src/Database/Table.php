@@ -11,6 +11,8 @@
 
 namespace Avolutions\Database;
 
+use Avolutions\Di\Container;
+
 /**
  * Table class
  *
@@ -73,8 +75,9 @@ class Table
 		}
 		$query = rtrim($query, ',');
 		$query .= ')';
-			
-		$Database = new Database();
+            
+        $Container = Container::getInstance();
+		$Database = $Container->get('Avolutions\Database\Database');
 		$Database->query($query);
 	}
 	
@@ -95,7 +98,8 @@ class Table
 			$query .= ' AFTER `'.$after.'`';
 		}
 		
-		$Database = new Database();
+        $Container = Container::getInstance();
+		$Database = $Container->get('Avolutions\Database\Database');
 		$Database->query($query);
 	}
 	
@@ -111,7 +115,8 @@ class Table
     {
 		$query = 'ALTER TABLE `'.$tableName.'` DROP COLUMN '.$columnName;
 			
-		$Database = new Database();
+        $Container = Container::getInstance();
+		$Database = $Container->get('Avolutions\Database\Database');
 		$Database->query($query);
 	}
 	
@@ -140,7 +145,8 @@ class Table
 		$query = rtrim($query, ',');
 		$query .= ')';
 				
-		$Database = new Database();
+        $Container = Container::getInstance();
+		$Database = $Container->get('Avolutions\Database\Database');
 		$Database->query($query);
 	}
 	
@@ -172,7 +178,8 @@ class Table
         }	
         $query .= 'FOREIGN KEY (`'.$columnName.'`) REFERENCES `'.$referenceTableName.'`(`'.$referenceColumnName.'`) ON DELETE '.$onDelete.' ON UPDATE '.$onUpdate;
                     
-        $Database = new Database();
+        $Container = Container::getInstance();
+		$Database = $Container->get('Avolutions\Database\Database');
         $Database->query($query);
 	}
 }

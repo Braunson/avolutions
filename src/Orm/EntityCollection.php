@@ -14,6 +14,7 @@ namespace Avolutions\Orm;
 use Avolutions\Collection\CollectionInterface;
 use Avolutions\Collection\CollectionTrait;
 use Avolutions\Database\Database;
+use Avolutions\Di\Container;
 use Avolutions\Logging\Logger;
 
 /**
@@ -97,7 +98,8 @@ class EntityCollection implements CollectionInterface
 	 */
     private function execute()
     {
-		$Database = new Database();
+        $Container = Container::getInstance();
+		$Database = $Container->get('Avolutions\Database\Database');
 
 		$query = 'SELECT ';
 		$query .= $this->EntityConfiguration->getFieldQuery();
