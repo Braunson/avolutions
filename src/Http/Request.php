@@ -12,6 +12,7 @@
 namespace Avolutions\Http;
 
 use Avolutions\Di\Container;
+use Avolutions\Http\Response;
 use Avolutions\Routing\Router; 
 
 /**
@@ -88,7 +89,7 @@ class Request
         // Merge the parameters of the route with the values of $_REQUEST
         $parameters = array_merge($MatchedRoute->parameters, $this->parameters);
 
-		$Response = $this->Container->get('Avolutions\Http\Response');
+		$Response = $this->Container->get(Response::class);
 		$Response->setBody(call_user_func_array([$Controller, $fullActionName], $parameters));
 		$Response->send();
 	}

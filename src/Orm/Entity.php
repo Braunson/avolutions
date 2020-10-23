@@ -221,7 +221,7 @@ class Entity
 		Logger::debug('Values: '.print_r($values, true));
 
         $Container = Container::getInstance();
-		$Database = $Container->get('Avolutions\Database\Database');
+		$Database = $Container->get(Database::class);
 		$stmt = $Database->prepare($query);
 		$stmt->execute($values);	
 	}

@@ -20,7 +20,7 @@ class RouteCollectionTest extends TestCase
     public function testRouteCollectionCanBeCreated()
     {
         $Container = Container::getInstance();
-        $RouteCollection = $Container->get('Avolutions\Routing\RouteCollection');
+        $RouteCollection = $Container->get(RouteCollection::class);
         
         $this->assertInstanceOf('Avolutions\Routing\RouteCollection', $RouteCollection);    
     }
@@ -28,7 +28,7 @@ class RouteCollectionTest extends TestCase
     public function testRoutesCanBeAddedToCollection()
     {
         $Container = Container::getInstance();
-        $RouteCollection = $Container->get('Avolutions\Routing\RouteCollection');
+        $RouteCollection = $Container->get(RouteCollection::class);
 
         $Route = new Route('');
         $Route2 = new Route('', ['method' => 'POST']);
@@ -43,7 +43,7 @@ class RouteCollectionTest extends TestCase
     public function testCountItemsOfCollection()
     {
         $Container = Container::getInstance();
-        $RouteCollection = $Container->get('Avolutions\Routing\RouteCollection');
+        $RouteCollection = $Container->get(RouteCollection::class);
 
         $this->assertEquals(2, $RouteCollection->count());
     }
@@ -51,7 +51,7 @@ class RouteCollectionTest extends TestCase
     public function testGetAllItemsOfCollection()
     {
         $Container = Container::getInstance();
-        $RouteCollection = $Container->get('Avolutions\Routing\RouteCollection');
+        $RouteCollection = $Container->get(RouteCollection::class);
 
         $allItems = $RouteCollection->getAll();
 
@@ -63,7 +63,7 @@ class RouteCollectionTest extends TestCase
     public function testGetAllItemsByMethodOfCollection()
     {
         $Container = Container::getInstance();
-        $RouteCollection = $Container->get('Avolutions\Routing\RouteCollection');
+        $RouteCollection = $Container->get(RouteCollection::class);
 
         $allGet = $RouteCollection->getAllByMethod('GET');        
         $allPost = $RouteCollection->getAllByMethod('POST');

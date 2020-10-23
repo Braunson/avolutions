@@ -21,7 +21,7 @@ class RouterTest extends TestCase
     protected function setUp(): void
     {
         $Container = Container::getInstance();
-        $RouteCollection = $Container->get('Avolutions\Routing\RouteCollection');
+        $RouteCollection = $Container->get(RouteCollection::class);
         $RouteCollection->items = [];
 
         $RouteCollection->addRoute(new Route('/user/<id>',
@@ -81,7 +81,7 @@ class RouterTest extends TestCase
     public function testRouteWithDynamicControllerAndAction()
     {
         $Container = Container::getInstance();
-        $Router = $Container->get('Avolutions\Routing\Router');
+        $Router = $Container->get(Router::class);
         $Route = $Router->findRoute('/user/new', 'GET');
 
         $this->assertInstanceOf('Avolutions\Routing\Route', $Route);
@@ -93,7 +93,7 @@ class RouterTest extends TestCase
     public function testRouteWithParameter()
     {
         $Container = Container::getInstance();
-        $Router = $Container->get('Avolutions\Routing\Router');
+        $Router = $Container->get(Router::class);
         $Route = $Router->findRoute('/user/9', 'GET');
 
         $this->assertInstanceOf('Avolutions\Routing\Route', $Route);
@@ -106,7 +106,7 @@ class RouterTest extends TestCase
     public function testRouteWithOptionalParameter()
     {
         $Container = Container::getInstance();
-        $Router = $Container->get('Avolutions\Routing\Router');
+        $Router = $Container->get(Router::class);
         $Route = $Router->findRoute('/user/delete', 'GET');
 
         $this->assertInstanceOf('Avolutions\Routing\Route', $Route);
@@ -119,7 +119,7 @@ class RouterTest extends TestCase
     public function testRouteWithParameterDefaultValue()
     {        
         $Container = Container::getInstance();
-        $Router = $Container->get('Avolutions\Routing\Router');
+        $Router = $Container->get(Router::class);
         $Route = $Router->findRoute('/user/edit', 'GET');
 
         $this->assertInstanceOf('Avolutions\Routing\Route', $Route);
@@ -132,7 +132,7 @@ class RouterTest extends TestCase
     public function testRouteWithMultipleParameters()
     {
         $Container = Container::getInstance();
-        $Router = $Container->get('Avolutions\Routing\Router');
+        $Router = $Container->get(Router::class);
         $Route = $Router->findRoute('/user/copy/1/2', 'GET');
 
         $this->assertInstanceOf('Avolutions\Routing\Route', $Route);

@@ -25,8 +25,8 @@ class LoggerTest extends TestCase
     protected function setUp(): void
     {
         $Container = Container::getInstance();
-        $Config = $Container->get("Avolutions\Config\Config");
-        $this->Logger = $Container->get("Avolutions\Logging\Logger");
+        $Config = $Container->get(Config::class);
+        $this->Logger = $Container->get(Logger::class);
 
         $this->logFile = $Config->get("logger/logpath").$Config->get("logger/logfile");
     }

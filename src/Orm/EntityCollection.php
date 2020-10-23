@@ -99,7 +99,7 @@ class EntityCollection implements CollectionInterface
     private function execute()
     {
         $Container = Container::getInstance();
-		$Database = $Container->get('Avolutions\Database\Database');
+		$Database = $Container->get(Database::class);
 
 		$query = 'SELECT ';
 		$query .= $this->EntityConfiguration->getFieldQuery();

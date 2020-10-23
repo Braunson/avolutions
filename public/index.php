@@ -29,5 +29,5 @@ require_once '../events.php';
 /**
  * Start the application
  */
-$Request = $Container->get('Avolutions\Http\Request');
+$Request = $Container->get(Request::class);
 $Response = $Request->send();

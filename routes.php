@@ -13,7 +13,7 @@ use Avolutions\Routing\RouteCollection;
 use Avolutions\Routing\Route;
 use Avolutions\Routing\Router;
 
-$RouteCollection = $Container->get("Avolutions\Routing\RouteCollection");
+$RouteCollection = $Container->get(RouteCollection::class);
 
 /**
  * Register routes

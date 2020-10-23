@@ -9,10 +9,14 @@
  * @link		http://avolutions.org
  */
 
-use Avolutions\Core\Autoloader;
 use Avolutions\Config\Config;
+use Avolutions\Core\Autoloader;
+use Avolutions\Core\ErrorHandler;
 use Avolutions\Database\Database;
 use Avolutions\Di\Container;
+use Avolutions\Event\ListenerCollection;
+use Avolutions\Logging\Logger;
+use Avolutions\Routing\RouteCollection;
 
 /**
  * Get start time
@@ -64,21 +68,21 @@ $Container = Container::getInstance();
 /**
  * Configure dependency injection container
  */
-$Container->setSingleton("Avolutions\Di\Container");
-$Container->setSingleton("Avolutions\Config\Config");
-$Container->setSingleton("Avolutions\Event\ListenerCollection");
-$Container->setSingleton("Avolutions\Routing\RouteCollection");
+$Container->setSingleton(Container::class);
+$Container->setSingleton(Config::class);
+$Container->setSingleton(ListenerCollection::class);
+$Container->setSingleton(RouteCollection::class);
 
 /**
  * Initialize the Configuration
  */	 
-$Config = $Container->get("Avolutions\Config\Config");
+$Config = $Container->get(Config::class);
 $Config->initialize();
 
 /**
  * Set error handler
  */
-$ErrorHandler = $Container->get('Avolutions\Core\ErrorHandler');
+$ErrorHandler = $Container->get(ErrorHandler::class);
 set_error_handler([$ErrorHandler, 'handleError']);
 set_exception_handler([$ErrorHandler, 'handleException']);
 
@@ -95,6 +99,6 @@ define('APP_MODEL_NAMESPACE', APPLICATION_NAMESPACE.'\\'.MODEL.'\\');
  * Migrate the Database
  */
 if ($Config->get('database/migrateOnAppStart')) {	    
-    $Database = $Container->get("Avolutions\Database\Database");
+    $Database = $Container->get(Database::class);
 	$Database->migrate(); 
 }

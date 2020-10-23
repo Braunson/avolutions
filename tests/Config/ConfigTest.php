@@ -20,7 +20,7 @@ class ConfigTest extends TestCase
     public function testDefaultConfigValuesCanBeRead()
     {
         $Container = Container::getInstance();
-        $Config = $Container->get("Avolutions\Config\Config");
+        $Config = $Container->get(Config::class);
         $Config->initialize();
 
         $this->assertEquals($Config->get("application/namespace"), "Application");
