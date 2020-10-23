@@ -34,6 +34,11 @@ class Container extends AbstractSingleton
     private $singletons = [];
 
     /**
+     * TODO
+     */
+    private $interfaces = [];
+
+    /**
      * Finds an entry of the container by its identifier and returns it.
      *
      * @param string $id Identifier of the entry to look for.
@@ -49,6 +54,10 @@ class Container extends AbstractSingleton
         }        
 
         $parameters = [];
+        
+        if(isset($this->interfaces[$id])) {
+            $id = $this->interfaces[$id];
+        }
 
         $ReflectionClass = new \ReflectionClass($id);        
         $Constructor = $ReflectionClass->getConstructor();
@@ -78,5 +87,13 @@ class Container extends AbstractSingleton
         if (!isset($this->singletons[$id])) {
             $this->singletons[$id] = $id;
         }
+    }
+
+    /**
+     * TODO
+     */
+    public function setInterface($interface, $instance)
+    {
+        $this->interfaces[$interface] = $instance;
     }
 }
