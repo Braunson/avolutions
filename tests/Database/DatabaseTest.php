@@ -19,7 +19,7 @@ class DatabaseTest extends TestCase
     public function testDatabaseConnection()
     {
         $Container = Container::getInstance();
-		$Database = $Container->get('Avolutions\Database\Database');
+		$Database = $Container->get(Database::class);
 
         $this->assertInstanceOf('\PDO', $Database);
     }
@@ -62,7 +62,7 @@ class DatabaseTest extends TestCase
         ];
 
         $Container = Container::getInstance();
-        $Database = $Container->get('Avolutions\Database\Database');
+        $Database = $Container->get(Database::class);
          
         $Database->migrate();
 
