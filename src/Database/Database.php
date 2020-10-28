@@ -24,26 +24,13 @@ use Avolutions\Config\Config;
  */
 class Database extends \PDO
 {
-    /**
-     * TODO
-     */
-    private $Config;
-
 	/**
 	 * __construct
 	 * 
 	 * Creates a database connection using the config values from database configuration file.
 	 */
-    public function __construct(Config $Config)
+    public function __construct($host, $database, $port, $user, $password, $charset)
     {
-        $this->Config = $Config;
-
-		$host = $this->Config->get('database/host');
-		$database = $this->Config->get('database/database');
-		$port = $this->Config->get('database/port');
-		$user = $this->Config->get('database/user');
-		$password = $this->Config->get('database/password');
-		$charset  = $this->Config->get('database/charset');
 		$options  = [
             \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES '.$charset,
 			\PDO::ATTR_PERSISTENT => true

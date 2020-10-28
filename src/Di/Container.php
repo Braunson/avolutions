@@ -39,6 +39,11 @@ class Container extends AbstractSingleton
     private $interfaces = [];
 
     /**
+     * TODO
+     */
+    private $constructorParams = [];
+
+    /**
      * Finds an entry of the container by its identifier and returns it.
      *
      * @param string $id Identifier of the entry to look for.
@@ -64,12 +69,16 @@ class Container extends AbstractSingleton
 
         if(!is_null($Constructor)) {
             foreach ($Constructor->getParameters() AS $parameter) {
-                $className = $parameter->getType()->getName();
-                $parameters[] = $this->get($className);
+                if(isset($this->constructorParams[$id][$parameter->getName()])) {
+                    $parameters[] = $this->constructorParams[$id][$parameter->getName()];
+                } else {
+                    $className = $parameter->getType()->getName();
+                    $parameters[] = $this->get($className);
+                }
             }
         }
 
-        if($ReflectionClass->isSubclassOf('Avolutions\Core\AbstractSingleton')) {
+        if($ReflectionClass->isSubclassOf(AbstractSingleton::class)) {
             $entry = $id::getInstance();
         } else {
             $entry = new $id(...$parameters);
@@ -95,5 +104,13 @@ class Container extends AbstractSingleton
     public function setInterface($interface, $instance)
     {
         $this->interfaces[$interface] = $instance;
+    }
+
+    /**
+     * TODO
+     */
+    public function setConstructorParams($class, $params = [])
+    {
+        $this->constructorParams[$class] = $params;
     }
 }
